@@ -7,22 +7,25 @@ import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
+import com.lukasrosz.vaccheckeronline.steamapiintegration.urlmaker.SteamApiUrlMaker;
+import com.lukasrosz.vaccheckeronline.steamapiintegration.urlmaker.SteamApiUrlMakerImpl;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 @Configuration
-//@EnableTransactionManagement
-//@ComponentScan(basePackages = "com.lukasrosz.vaccheckeronline")
-//@PropertySource("classpath:application.properties")
 public class AppConfig {
 
 	@Autowired
 	private Environment env;
+	
+	@Value("${steamAPIKey}")
+	private String steamAPIKey;
 
 	@Bean
 	public DataSource mainDataSource() {
@@ -90,6 +93,12 @@ public class AppConfig {
 				setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
 			}
 		};
+	}
+	
+	@Bean
+	public SteamApiUrlMaker steamAPIUrlMaker() {
+		SteamApiUrlMaker steamAPIUrlMaker = new SteamApiUrlMakerImpl(steamAPIKey);
+		return steamAPIUrlMaker;
 	}
 
 }

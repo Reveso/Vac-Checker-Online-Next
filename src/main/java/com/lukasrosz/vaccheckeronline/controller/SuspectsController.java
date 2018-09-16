@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 
 import com.lukasrosz.vaccheckeronline.service.SuspectService;
-import com.lukasrosz.vaccheckeronline.suspects.entity.Suspect;
-
+import com.lukasrosz.vaccheckeronline.steamapiintegration.urlmaker.SteamApiUrlMaker;
+import com.lukasrosz.vaccheckeronline.suspects.entity.SuspectDto;
 
 @Controller
 @RequestMapping("/suspects")
@@ -28,39 +29,48 @@ public class SuspectsController {
 	@Autowired
 	private SuspectService suspectService;
 	
+	@Autowired
+	private SteamApiUrlMaker steamApiUrlMaker;
+	
 	@GetMapping("/showList")
 	public String showSuspectList(Model model) {
-		List<Suspect> suspects = suspectService.getSuspects();
-		
+		List<SuspectDto> suspects = suspectService.getSuspects();
+
 		model.addAttribute("suspects", suspects);
 		return "list-suspects";
 	}
 	
 	@GetMapping("/showFormForAdd")
 	public String showFormForAdd(Model model) {
-		model.addAttribute("suspect", new Suspect());
+		model.addAttribute("suspect", new SuspectDto());
 		return "form-suspects";
 	}
 	
 	@GetMapping("/showFormForUpdate")
 	public String showFormForUpdate(@RequestParam("suspectId") int suspectId, 
 									Model model) {
-		Suspect suspect = suspectService.getSuspect(suspectId);
+		SuspectDto suspect = suspectService.getSuspect(suspectId);
 		model.addAttribute("suspect", suspect);
 		return "form-suspects";	
 	}
 	
 	@PostMapping("/saveSuspect")
-	public String saveSuspect(@Valid @ModelAttribute("suspect") Suspect suspect, 
+	public String saveSuspect(@Valid @ModelAttribute("suspect") SuspectDto suspectDto, 
 							BindingResult bindingResult, Model model) {
 		
-		if(bindingResult.hasErrors())
-			return "form-suspects";	
+		RestTemplate restTemplate = new RestTemplate();
 		
+		if(!suspectDto.isSteamAccount(restTemplate, steamApiUrlMaker)) {
+			String incorrectIdError = "Incorrect ID";
+			model.addAttribute("error", incorrectIdError);
+			return "form-suspects";	
+		}
 
-		if(suspectService.saveSuspect(suspect) == false) {
-			String onListError = "Url already on list";
-			model.addAttribute("onListError", onListError);
+		suspectDto.updateVACStatus(restTemplate, steamApiUrlMaker);
+		
+		if(suspectService.saveSuspect(suspectDto) == false) {
+			String onListError = "ID already on list";
+			model.addAttribute("error", onListError);
 			return "form-suspects";
 		}
 		
@@ -79,37 +89,4 @@ public class SuspectsController {
 		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
 	}
 	
-	public static String getHTMLSource(String url) {
-		if(url == null) 
-			return "Couldn't connect.";
-		
-		String source = "";
-		
-		//TODO: This will be replaced by JSON
-		
-		
-//		try {		
-//			URL urlConnection = new URL(url);
-//			source = Jsoup.connect(url).get().html();
-//			source = urlConnection.get
-//		} catch (IOException | IllegalArgumentException e) {
-//			source = "Couldn't connect.";
-//			System.out.println("=====================================" + 
-//								"====================================" + 
-//								"============================>>> getHTMLSource Exception");
-//			e.printStackTrace();
-//		}
-		
-		return source;
-	}
-	
-	public static boolean checkVacStatus(String url) {
-		String source = getHTMLSource(url);
-		if(source.contains("profile_ban_status")) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 }

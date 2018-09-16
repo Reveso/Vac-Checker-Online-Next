@@ -1,18 +1,18 @@
-package com.lukasrosz.vaccheckeronline.steamapiintegration.entity;
+package com.lukasrosz.vaccheckeronline.steamapiintegration.playersummaries;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SteamPlayer {
+public class SteamPlayerSummary {
 	
 	private String steamid;
 	private String personaname;
 	
-	public SteamPlayer() {
+	public SteamPlayerSummary() {
 
 	}
 	
-	public SteamPlayer(String steamid, String personaname) {
+	public SteamPlayerSummary(String steamid, String personaname) {
 		this.steamid = steamid;
 		this.personaname = personaname;
 	}
@@ -35,7 +35,7 @@ public class SteamPlayer {
 
 	@Override
 	public String toString() {
-		return "SteamPlayer [steamid=" + steamid + ", personaname=" + personaname + "]";
+		return "SteamPlayerSummary [steamid=" + steamid + ", personaname=" + personaname + "]";
 	}
 
 }

@@ -8,7 +8,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.lukasrosz.vaccheckeronline.accounts.entity.User;
+import com.lukasrosz.vaccheckeronline.accounts.entity.UserDto;
 
 
 @Repository
@@ -18,36 +18,31 @@ public class UserDAOImpl implements UserDAO {
 	private SessionFactory usersSessionFactory;
 
 	@Override
-	public List<User> getUsersList() {
-		
+	public List<UserDto> getUsersList() {
 		Session session = usersSessionFactory.getCurrentSession();
 		
-		Query<User> usersQuery = session.createQuery("SELECT u FROM User u", 
-																User.class);
+		Query<UserDto> usersQuery = session.createQuery("SELECT u FROM UserDto u", 
+																UserDto.class);
 		
-		List<User> usersList = usersQuery.getResultList();
+		List<UserDto> usersList = usersQuery.getResultList();
 		
 		usersList.forEach(user -> System.out.println(user.getAuthorities()));
 		return usersList;
 	}
 
 	@Override
-	public User getUser(String username) {
-
+	public UserDto getUser(String username) {
 		Session session = usersSessionFactory.getCurrentSession();
 		
-		User user = session.get(User.class, username);
+		UserDto user = session.get(UserDto.class, username);
 		System.out.println(user.getAuthorities());
 		
 		return user;
 	}
 
 	@Override
-	public void saveUser(User user) {
-
+	public void saveUser(UserDto user) {
 		Session session = usersSessionFactory.getCurrentSession();
-		
-		
 		
 		session.saveOrUpdate(user);
 	}

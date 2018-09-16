@@ -1,35 +1,42 @@
 package com.lukasrosz.vaccheckeronline.accounts.entity;
 
-import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.lukasrosz.vaccheckeronline.validation.PasswordMatches;
-import com.lukasrosz.vaccheckeronline.validation.ValidEmail;
-
-@PasswordMatches
+@Entity
+@Table(name="users")
 public class UserDto {
 
+	@Id
 	@NotNull
-	@NotEmpty
+	@Column(name="username")
 	private String username;
-
+	
 	@NotNull
-	@NotEmpty
+	@Column(name="password")
 	private String password;
 
 	@NotNull
-	@NotEmpty
-	private String matchingPassword;
-
-	@ValidEmail
-	@NotNull
-	@NotEmpty
-	private String email;
+	@Column(name="enabled")
+	private boolean enabled;
 	
+	@OneToMany(mappedBy="username", fetch=FetchType.EAGER,
+			cascade=CascadeType.ALL)
+	private List<AuthorityDto> authorities = new ArrayList<>();
+			
 	public UserDto() {
-		
-	}
 
+	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -37,8 +44,6 @@ public class UserDto {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
-
 
 	public String getPassword() {
 		return password;
@@ -48,26 +53,25 @@ public class UserDto {
 		this.password = password;
 	}
 
-	public String getMatchingPassword() {
-		return matchingPassword;
+	public boolean getEnabled() {
+		return enabled;
 	}
 
-	public void setMatchingPassword(String matchingPassword) {
-		this.matchingPassword = matchingPassword;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
-	public String getEmail() {
-		return email;
+	public List<AuthorityDto> getAuthorities() {
+		return authorities;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setAuthorities(List<AuthorityDto> authorities) {
+		this.authorities = authorities;
 	}
 
 	@Override
 	public String toString() {
-		return "UserDto [nickname=" + username + ", password=" + password + ", matchingPassword=" + matchingPassword
-				+ ", email=" + email + "]";
+		return "User [username=" + username + ", password=" + password + ", enabled=" + enabled +"]";
 	}
 	
 }

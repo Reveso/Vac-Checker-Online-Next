@@ -1,15 +1,14 @@
-package com.lukasrosz.vaccheckeronline.steamapiintegration.entity;
-
-public class ResolveVanityUrlResponse {
+package com.lukasrosz.vaccheckeronline.steamapiintegration.vanityurl;
+public class ResolveVanityResponse {
 
 	private String steamid;
 	private int success;
 	
-	public ResolveVanityUrlResponse() {
+	public ResolveVanityResponse() {
 
 	}
 	
-	public ResolveVanityUrlResponse(String steamid, int success) {
+	public ResolveVanityResponse(String steamid, int success) {
 		this.steamid = steamid;
 		this.success = success;
 	}
@@ -32,7 +31,7 @@ public class ResolveVanityUrlResponse {
 	
 	@Override
 	public String toString() {
-		return "ResolveVanityUrlResponse [steamid=" + steamid + ", success=" + success + "]";
+		return "ResolveVanityResponse [steamid=" + steamid + ", success=" + success + "]";
 	}
 	
 }

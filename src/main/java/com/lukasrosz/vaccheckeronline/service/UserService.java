@@ -2,19 +2,14 @@ package com.lukasrosz.vaccheckeronline.service;
 
 import java.util.List;
 
-import com.lukasrosz.vaccheckeronline.accounts.entity.User;
+import com.lukasrosz.vaccheckeronline.accounts.entity.UserDto;
 
 public interface UserService {
 	
-	public List<User> getUsersList();
+	public List<UserDto> getUsersList();
 
-	public User getUser(String username);
+	public UserDto getUser(String username);
 
-	public void saveUser(User user);
-	
-	
-	public User registerNewUserAccount();
-	
-	
+	public void saveUser(UserDto user);
 
 }

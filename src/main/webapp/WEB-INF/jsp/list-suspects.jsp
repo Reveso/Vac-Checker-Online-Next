@@ -87,7 +87,7 @@
 			<!--  add our html table here -->
 			<table>
 				<tr>
-					<th>Nickname</th>
+					<th>Username</th>
 					<th>VAC Status</th>
 					<th>Added</th>
 					<th>Description</th>
@@ -115,7 +115,8 @@
 					</security:authorize>
 
 					<tr>
-						<td><a href="${tempSuspect.accountUrl}">${tempSuspect.nickname}</a></td>
+						<td><a href="http://steamcommunity.com/profile/${tempSuspect.steamid}">
+						${tempSuspect.username}</a></td>
 						<td>${tempSuspect.vacStatus}</td>
 						<td>${tempSuspect.additionDate}</td>
 						<td>${tempSuspect.description}</td>
@@ -138,9 +139,6 @@
 		</div>
 
 	</div>
-	
-	<br>
-	<a href="${pageContext.request.contextPath}/">Back to home page</a>
 
 </body>
 

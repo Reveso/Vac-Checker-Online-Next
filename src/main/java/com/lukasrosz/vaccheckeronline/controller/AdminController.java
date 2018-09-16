@@ -18,12 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.lukasrosz.vaccheckeronline.accounts.entity.Role;
 import com.lukasrosz.vaccheckeronline.accounts.entity.AuthorityContsants;
-import com.lukasrosz.vaccheckeronline.accounts.entity.User;
+import com.lukasrosz.vaccheckeronline.accounts.entity.AuthorityDto;
+import com.lukasrosz.vaccheckeronline.accounts.entity.UserDto;
 import com.lukasrosz.vaccheckeronline.accounts.entity.UserForm;
 import com.lukasrosz.vaccheckeronline.service.UserService;
-
 
 
 @Controller
@@ -39,7 +38,7 @@ public class AdminController {
 	@GetMapping("/showPanel")
 	public String showPanel(Model model) {
 
-		List<User> users = userService.getUsersList();
+		List<UserDto> users = userService.getUsersList();
 		UserForm userForm = new UserForm();
 		userForm.setUsers(users);
 		
@@ -51,12 +50,12 @@ public class AdminController {
 	@GetMapping("/editUser")
 	public String editUser(@RequestParam("username") String username, Model model) {
 	
-		User user = userService.getUser(username);
+		UserDto user = userService.getUser(username);
 		
-		List<Role> authorityList = new ArrayList<>();
+		List<AuthorityDto> authorityList = new ArrayList<>();
 		
 		for (String authority : AuthorityContsants.authorities) {
-			authorityList.add(new Role(username, "ROLE_" + authority));
+			authorityList.add(new AuthorityDto(username, "ROLE_" + authority));
 		}
 		
 		model.addAttribute("user", user);
@@ -65,7 +64,7 @@ public class AdminController {
 	}
 	
 	@PostMapping("/saveUser")
-	public String saveUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
+	public String saveUser(@ModelAttribute("user") UserDto user, BindingResult bindingResult) {
 		
 		if(bindingResult.hasErrors()) {
 			return "edit-user-form";
@@ -75,11 +74,11 @@ public class AdminController {
 		System.out.println(user.getAuthorities());
 		
 		if(user.getAuthorities() == null) {
-			user.setAuthorities(new ArrayList<Role>());
-			user.getAuthorities().add(new Role("ROLE_UNREGISTERED"));
+			user.setAuthorities(new ArrayList<AuthorityDto>());
+			user.getAuthorities().add(new AuthorityDto("ROLE_UNREGISTERED"));
 			
 		} else if(user.getAuthorities().size() == 0) {
-			user.getAuthorities().add(new Role("ROLE_UNREGISTERED"));	
+			user.getAuthorities().add(new AuthorityDto("ROLE_UNREGISTERED"));	
 		}
 					
 		boolean isEnabled = user.getEnabled();

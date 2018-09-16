@@ -14,7 +14,7 @@
 
 <body>
 
-	<h2>Create new VAC Checker account</h2>
+	<h2>Register new Vac Checker account</h2>
 
 	<form:form
 		action="${pageContext.request.contextPath}/users/processRegistrationForm"
@@ -22,27 +22,15 @@
 
 		<i class="failed">${registrationError}</i>
 		<p>
-			Username:
+			Nickname:
 			<form:input path="username" />
 			<form:errors path="username" cssClass="failed" />
 		</p>
 
 		<p>
-			E-mail:
-			<form:input path="email"/>
-			<form:errors path="email" cssClass="failed" />
-		</p>
-		
-		<p>
 			Password:
 			<form:input path="password" type="password"/>
 			<form:errors path="password" cssClass="failed" />
-		</p>
-		
-		<p>
-			Confirm:
-			<form:input path="matchingPassword" type="password"/>
-			<form:errors path="matchingPassword" cssClass="failed"/>
 		</p>
 
 		<input type="submit" value="Register" />

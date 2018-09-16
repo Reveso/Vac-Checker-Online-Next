@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lukasrosz.vaccheckeronline.accounts.entity.User;
+import com.lukasrosz.vaccheckeronline.accounts.entity.UserDto;
 import com.lukasrosz.vaccheckeronline.dao.SuspectDAO;
 import com.lukasrosz.vaccheckeronline.dao.UserDAO;
-import com.lukasrosz.vaccheckeronline.suspects.entity.Suspect;
+import com.lukasrosz.vaccheckeronline.suspects.entity.SuspectDto;
 
 @Service
 public class MainDatabaseServiceImpl implements UserService, SuspectService {
@@ -22,25 +22,25 @@ public class MainDatabaseServiceImpl implements UserService, SuspectService {
 	
 	@Override
 	@Transactional(value="mainDBTransactionManager")
-	public List<Suspect> getSuspects() {
+	public List<SuspectDto> getSuspects() {
 		return suspectDAO.getSuspects();
 	}
 
 	@Override
 	@Transactional(value="mainDBTransactionManager")
-	public boolean saveSuspect(Suspect suspect) {
+	public boolean saveSuspect(SuspectDto suspect) {
 		return suspectDAO.saveSuspect(suspect);
 	}
 
 	@Override
 	@Transactional(value="mainDBTransactionManager")
-	public Suspect getSuspect(int id) {
+	public SuspectDto getSuspect(int id) {
 		return suspectDAO.getSuspect(id);
 	}
 
 	@Override
 	@Transactional(value="mainDBTransactionManager")
-	public void updateSuspect(Suspect suspect) {
+	public void updateSuspect(SuspectDto suspect) {
 		suspectDAO.updateSuspect(suspect);
 	}
 	
@@ -52,19 +52,19 @@ public class MainDatabaseServiceImpl implements UserService, SuspectService {
 	
 	@Override
 	@Transactional(value="mainDBTransactionManager")
-	public List<User> getUsersList() {
+	public List<UserDto> getUsersList() {
 		return userDAO.getUsersList();
 	}
 
 	@Override
 	@Transactional(value="mainDBTransactionManager")
-	public User getUser(String username) {
+	public UserDto getUser(String username) {
 		return userDAO.getUser(username);
 	}
 
 	@Override
 	@Transactional(value="mainDBTransactionManager")
-	public void saveUser(User user) {
+	public void saveUser(UserDto user) {
 		userDAO.saveUser(user);
 	}
 

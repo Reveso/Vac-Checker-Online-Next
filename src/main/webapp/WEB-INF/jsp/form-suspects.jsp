@@ -39,19 +39,11 @@
 			<!--  need to associate this data with customer id -->
 			<form:hidden path="id" />
 			<table>
-				<tbody>
+				<tbody>		
 					<tr>
-						<td><label>Nickname:</label></td>
-						<td><form:input path="nickname" />
-						<form:errors path="nickname" cssClass="error" /></td>
-							
-					</tr>
-				
-					<tr>
-						<td><label>URL:</label></td>
-						<td><form:input path="accountUrl" />
-						<form:errors path="accountUrl" cssClass="error" /><span>${onListError}</span></td>
-							
+						<td><label>SteamID:</label></td>
+						<td><form:input path="steamid" />
+						<form:errors path="steamid" cssClass="error" /><span>${error}</span></td>
 					</tr>
 
 					<tr>

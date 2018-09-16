@@ -2,14 +2,15 @@ package com.lukasrosz.vaccheckeronline.dao;
 
 import java.util.List;
 
-import org.hibernate.NonUniqueObjectException;
+import javax.persistence.NoResultException;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.lukasrosz.vaccheckeronline.suspects.entity.Suspect;
+import com.lukasrosz.vaccheckeronline.suspects.entity.SuspectDto;
 
 
 @Repository
@@ -19,54 +20,58 @@ public class SuspectDAOImpl implements SuspectDAO {
 	private SessionFactory mainDbSessionFactory;
 	
 	@Override
-	public List<Suspect> getSuspects() {
+	public List<SuspectDto> getSuspects() {
 		
 		Session session = mainDbSessionFactory.getCurrentSession();
 		
-		Query<Suspect> suspectsQuery = session.createQuery("FROM Suspect ORDER BY additionDate DESC", 
-																Suspect.class);
+		Query<SuspectDto> suspectsQuery = session.createQuery("FROM SuspectDto ORDER BY additionDate DESC", 
+																SuspectDto.class);
 		
-		List<Suspect> suspectsList = suspectsQuery.getResultList();
+		List<SuspectDto> suspectsList = suspectsQuery.getResultList();
 		
 		return suspectsList;
 	}
 
 	@Override
-	public boolean saveSuspect(Suspect suspect) {
+	public boolean saveSuspect(SuspectDto suspect) {
 		Session session = mainDbSessionFactory.getCurrentSession();
 		
-//		Query<Suspect> suspectQuery = session.createQuery("FROM Suspect WHERE steamid=:suspectedID", 
-//															Suspect.class);
-//		suspectQuery.setParameter("suspectedID", suspect.getSteamid());
-//		Suspect suspectFromDb = suspectQuery.getSingleResult();
-//		
-//		if(suspectFromDb != null) {
-//			System.out.println("================================= >>>>>>>>> NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOPE");
-//			return false;
-//		} 
-// useless since exception will be thrown if not unique primaryKey - steamid
+		Query<SuspectDto> suspectQuery = session.createQuery("FROM SuspectDto WHERE steamid=:suspectedID", 
+				SuspectDto.class);
+		suspectQuery.setParameter("suspectedID", suspect.getSteamid());
 		
 		try {
-			session.save(suspect);
-		} catch (NonUniqueObjectException e) {
-			System.out.println("CATCHEEEEEEEEEEEEEEEED");
-			return false;
+			SuspectDto suspectFromDb = suspectQuery.getSingleResult();
+			if(suspectFromDb.getId() == suspect.getId()) {
+				Query<?> updateDescriptionQuery = session
+						.createQuery("UPDATE SuspectDto SET description=:newDesc WHERE id=:susid");
+				
+				updateDescriptionQuery.setParameter("newDesc", suspect.getDescription());
+				updateDescriptionQuery.setParameter("susid", suspectFromDb.getId());
+				
+				updateDescriptionQuery.executeUpdate();
+				return true;
+			}
+		} catch (NoResultException e) {
+			System.out.println("In exception ==========================================================================");
+			session.saveOrUpdate(suspect);
+			return true;
 		}
 		
-		return true;
+		return false;
 	}
 	
 	@Override
-	public void updateSuspect(Suspect suspect) {
+	public void updateSuspect(SuspectDto suspect) {
 		Session session = mainDbSessionFactory.getCurrentSession();
 		
 		session.update(suspect);
 	}
 
 	@Override
-	public Suspect getSuspect(int id) {
+	public SuspectDto getSuspect(int id) {
 		Session session = mainDbSessionFactory.getCurrentSession();
-		Suspect suspect = session.get(Suspect.class, id);
+		SuspectDto suspect = session.get(SuspectDto.class, id);
 		
 		return suspect;
 	}
@@ -75,7 +80,7 @@ public class SuspectDAOImpl implements SuspectDAO {
 	public void deleteSuspect(int id) {
 		Session session = mainDbSessionFactory.getCurrentSession();
 
-		Query<?> query = session.createQuery("delete from Suspect where id=:suspectId");
+		Query<?> query = session.createQuery("delete from SuspectDto where id=:suspectId");
 		query.setParameter("suspectId", id);
 		
 		query.executeUpdate();

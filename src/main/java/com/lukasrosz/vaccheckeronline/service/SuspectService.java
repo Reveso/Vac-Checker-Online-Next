@@ -2,18 +2,18 @@ package com.lukasrosz.vaccheckeronline.service;
 
 import java.util.List;
 
-import com.lukasrosz.vaccheckeronline.suspects.entity.Suspect;
+import com.lukasrosz.vaccheckeronline.suspects.entity.SuspectDto;
 
 
 public interface SuspectService {
 
-	public List<Suspect> getSuspects();
+	public List<SuspectDto> getSuspects();
 	
-	public boolean saveSuspect(Suspect suspect);
+	public boolean saveSuspect(SuspectDto suspect);
 	
-	public Suspect getSuspect(int id);
+	public SuspectDto getSuspect(int id);
 
 	public void deleteSuspect(int id);
 
-	public void updateSuspect(Suspect suspect);
+	public void updateSuspect(SuspectDto suspect);
 }
