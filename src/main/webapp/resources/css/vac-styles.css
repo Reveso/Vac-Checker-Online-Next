@@ -1,0 +1,26 @@
+body {
+	background-color: #EEEEEE;
+}
+
+.jumbotron {
+	background-color: #212529;
+	text-align: center;
+	margin: 20px;
+	padding: 10px;
+}
+
+.jumbotron > h2 {
+	color: #EEEEEE;
+}
+
+.details {
+	font-style: italic;
+}
+
+.details-button {
+	float: right;
+}
+
+.cell-vacstatus {
+	max-width: 250px;
+}

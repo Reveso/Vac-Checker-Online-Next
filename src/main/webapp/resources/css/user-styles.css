@@ -1,0 +1,29 @@
+body {
+	background-color: #EEEEEE;
+}
+
+#content {
+	width: 40%;
+	max-width: 500px;
+	margin: auto;
+	border: 3px solid #E0E0E0;
+	border-radius: 10px;
+	height: 20%;
+	padding: 20px;
+	background-color: #2d343a;
+	color: white;
+}
+
+.container {
+	margin: 10% auto;
+}
+
+.failed {
+	color: red;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
