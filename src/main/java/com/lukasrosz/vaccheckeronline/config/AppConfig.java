@@ -1,6 +1,5 @@
 package com.lukasrosz.vaccheckeronline.config;
 
-import java.beans.PropertyVetoException;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -16,7 +15,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import com.lukasrosz.vaccheckeronline.steamapiintegration.urlmaker.SteamApiUrlMaker;
 import com.lukasrosz.vaccheckeronline.steamapiintegration.urlmaker.SteamApiUrlMakerImpl;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 @Configuration
 public class AppConfig {
@@ -29,30 +28,24 @@ public class AppConfig {
 
 	@Bean
 	public DataSource mainDataSource() {
-		// create connection pool
-		ComboPooledDataSource mainDataSource = new ComboPooledDataSource();
+		MysqlDataSource mainDataSource = new MysqlDataSource();
+//		try {
+//			mainDataSource.setDriverClass(env.getProperty("suspect-jdbc.driver"));
+//		} catch (PropertyVetoException e) {
+//			throw new RuntimeException(e);
+//		}
 
-		// set the jdbc driver class
-		try {
-			mainDataSource.setDriverClass(env.getProperty("suspect-jdbc.driver"));
-		} catch (PropertyVetoException e) {
-			throw new RuntimeException(e);
-		}
-
-		// log the connection props
 		System.out.println(">>> vacchecker-jdbc.url=" + env.getProperty("vacchecker-jdbc.url"));
 		System.out.println(">>> vacchecker-jdbc.user=" + env.getProperty("vacchecker-jdbc.user"));
-
-		// set database connection props
-		mainDataSource.setJdbcUrl(env.getProperty("vacchecker-jdbc.url"));
+		mainDataSource.setUrl(env.getProperty("vacchecker-jdbc.url"));
+//		mainDataSource.setJdbcUrl(env.getProperty("vacchecker-jdbc.url"));
 		mainDataSource.setUser(env.getProperty("vacchecker-jdbc.user"));
 		mainDataSource.setPassword(env.getProperty("vacchecker-jdbc.password"));
 
-		// set connection pool props
-		mainDataSource.setInitialPoolSize(getIntProperty("connection.pool.initialPoolSize", env));
-		mainDataSource.setMinPoolSize(getIntProperty("connection.pool.minPoolSize", env));
-		mainDataSource.setMaxPoolSize(getIntProperty("connection.pool.maxPoolSize", env));
-		mainDataSource.setMaxIdleTime(getIntProperty("connection.pool.maxIdleTime", env));
+//		mainDataSource.setInitialPoolSize(getIntProperty("connection.pool.initialPoolSize", env));
+//		mainDataSource.setMinPoolSize(getIntProperty("connection.pool.minPoolSize", env));
+//		mainDataSource.setMaxPoolSize(getIntProperty("connection.pool.maxPoolSize", env));
+//		mainDataSource.setMaxIdleTime(getIntProperty("connection.pool.maxIdleTime", env));
 
 		return mainDataSource;
 	}

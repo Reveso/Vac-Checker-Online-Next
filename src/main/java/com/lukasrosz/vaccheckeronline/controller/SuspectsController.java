@@ -43,6 +43,7 @@ public class SuspectsController {
 	@GetMapping("/showFormForAdd")
 	public String showFormForAdd(Model model) {
 		model.addAttribute("suspect", new SuspectDto());
+		model.addAttribute("message", "Add a new suspect");
 		return "form-suspects";
 	}
 	
@@ -51,12 +52,17 @@ public class SuspectsController {
 									Model model) {
 		SuspectDto suspect = suspectService.getSuspect(suspectId);
 		model.addAttribute("suspect", suspect);
+		model.addAttribute("message", "Update suspect");
 		return "form-suspects";	
 	}
 	
 	@PostMapping("/saveSuspect")
 	public String saveSuspect(@Valid @ModelAttribute("suspect") SuspectDto suspectDto, 
 							BindingResult bindingResult, Model model) {
+		
+		if (bindingResult.hasErrors()) {
+			return "form-suspects";
+		}
 		
 		RestTemplate restTemplate = new RestTemplate();
 		

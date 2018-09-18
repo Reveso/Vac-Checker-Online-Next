@@ -1,18 +1,34 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Edit User</title>
+<title>Save Suspect</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/style.css">
+
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/add-customer-style.css">
+
+<style>
+.error {
+	color: red
+}
+
+span {
+	color: red
+}
+</style>
+
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="icon"
+	href="${pageContext.request.contextPath}/resources/VAC.jpg">
 <link rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
 	integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
@@ -21,10 +37,10 @@
 	href="${pageContext.request.contextPath}/resources/css/nav-style.css">
 <link rel="icon"
 	href="${pageContext.request.contextPath}/resources/VAC.jpg">
+
 </head>
 
 <body>
-
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<a class="navbar-brand" href="${pageContext.request.contextPath}/">Vac
 			Checker Online</a>
@@ -70,53 +86,48 @@
 			</ul>
 		</div>
 	</nav>
-	<h2>Edit User: ${user.username}</h2>
+	<div id="wrapper">
+		<div id="header">
+			<h2>VAC Checker Online</h2>
+		</div>
+	</div>
 
-	<form:form modelAttribute="user" method="POST" action="saveUser"
-		onsubmit="myButton.disabled = true; return true;">
+	<div id="container">
+		<h3>Save Suspect</h3>
 
-		<form:hidden path="password" />
+		<form:form action="saveSuspect" modelAttribute="suspect" method="POST">
 
-		<table>
-			<tbody>
-				<tr>
-					<td><label>Username:</label></td>
-					<form:hidden path="username" />
-					<form:errors path="username" cssClass="error" />
-					<td><input type="text" value="${user.username}" disabled /></td>
+			<!--  need to associate this data with customer id -->
+			<form:hidden path="id" />
+			<table>
+				<tbody>
+					<tr>
+						<td><label>SteamID:</label></td>
+						<td><form:input path="steamid" /> <form:errors
+								path="steamid" cssClass="error" /><span>${error}</span></td>
+					</tr>
 
-				</tr>
+					<tr>
+						<td><label>Description (optional):</label></td>
+						<td><form:input path="description" /></td>
+					</tr>
 
-				<tr>
-					<td><label>Authorities:</label></td>
-					<!-- <td><form:checkboxes items="${authorityList}" path="authorities" /></td>
-						 -->
-					<td><c:forEach var="tempRole" items="${authorityList}">
-							<form:checkbox path="authorities"
-								value="${fn:toUpperCase(tempRole)}" />${fn:replace(tempRole, "ROLE_", "")}
-						</c:forEach></td>
-				</tr>
+					<tr>
+						<td><label></label></td>
+						<td><input type="submit" value="Save" class="save" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</form:form>
 
-				<tr>
-					<td><label>Enabled:</label></td>
-					<td><form:checkbox path="enabled" value="1" /></td>
-				</tr>
+		<div style=""></div>
 
-				<tr>
-					<td><input type="submit" value="Save" name="myButton" /></td>
-				</tr>
-			</tbody>
-		</table>
-	</form:form>
+		<p>
+			<a href="${pageContext.request.contextPath}/suspects/showList">Back
+				to List</a>
+		</p>
 
-	<br>
-	<br>
-	<form:form
-		action="${pageContext.request.contextPath}/adminPanel/showPanel"
-		method="GET">
-		<input type="submit" value="Back to Admin Panel"
-			class="adminPanelButton" />
-	</form:form>
+	</div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>

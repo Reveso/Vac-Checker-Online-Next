@@ -24,3 +24,7 @@ body {
 .cell-vacstatus {
 	max-width: 250px;
 }
+
+.failed {
+	color: red;
+}

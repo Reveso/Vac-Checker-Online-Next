@@ -1,0 +1,36 @@
+body {
+	background-color: #EEEEEE;
+}
+
+#content {
+	width: 40%;
+	max-width: 500px;
+	margin: auto;
+	border: 3px solid #E0E0E0;
+	border-radius: 10px;
+	height: 20%;
+	padding: 20px;
+	background-color: #212529;
+	color: white;
+}
+
+.container {
+	margin: auto;
+}
+
+.failed {
+	color: red;
+}
+
+.jumbotron {
+	width: 40%;
+	max-width: 500px;
+	background-color: #212529;
+	text-align: center;
+	margin: 20px auto;
+	padding: 10px;
+}
+
+.jumbotron > h2 {
+	color: #EEEEEE;
+}

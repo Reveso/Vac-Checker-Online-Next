@@ -4,41 +4,17 @@
 
 <!DOCTYPE html>
 <html>
-
 <head>
-<title>Save Suspect</title>
-
-<link type="text/css" rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/style.css">
-
-<link type="text/css" rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/add-customer-style.css">
-
-<style>
-.error {
-	color: red
-}
-
-span {
-	color: red
-}
-</style>
-
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
-<link rel="icon"
+<title>Vac Checker Online</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">	
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" 
+	integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/nav-style.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/suspect-form-style.css">
+	<link rel="icon"
 	href="${pageContext.request.contextPath}/resources/VAC.jpg">
-<link rel="stylesheet"
-	href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-	integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
-	crossorigin="anonymous">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/nav-style.css">
-<link rel="icon"
-	href="${pageContext.request.contextPath}/resources/VAC.jpg">
-
 </head>
-
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<a class="navbar-brand" href="${pageContext.request.contextPath}/">Vac
@@ -85,49 +61,37 @@ span {
 			</ul>
 		</div>
 	</nav>
-	<div id="wrapper">
-		<div id="header">
-			<h2>VAC Checker Online</h2>
+
+
+	<div class="container">
+		<div class="jumbotron jumbotron-dark">
+			<h2 id="message">${message}</h2>
 		</div>
-	</div>
-
-	<div id="container">
-		<h3>Save Suspect</h3>
-
-		<form:form action="saveSuspect" modelAttribute="suspect" method="POST">
-
-			<!--  need to associate this data with customer id -->
+		<form:form id="content" action="saveSuspect" modelAttribute="suspect" method="POST">
 			<form:hidden path="id" />
-			<table>
-				<tbody>
-					<tr>
-						<td><label>SteamID:</label></td>
-						<td><form:input path="steamid" /> <form:errors
-								path="steamid" cssClass="error" /><span>${error}</span></td>
-					</tr>
-
-					<tr>
-						<td><label>Description (optional):</label></td>
-						<td><form:input path="description" /></td>
-					</tr>
-
-					<tr>
-						<td><label></label></td>
-						<td><input type="submit" value="Save" class="save" /></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="form-group">
+				<label for="steamIdInput">SteamID:</label> 
+				<!--<input type="text" class="form-control" id="steamIdInput" placeholder="">  -->
+				<form:input id="steamIdInput" class="form-control" path="steamid"/>
+				<form:errors path="steamid" class="failed"/><span class="failed">${error}</span>
+			</div>
+			<div class="form-group">
+				<label for="descriptionInput">Description (optional):</label>
+				<!--<input type="text" class="form-control" id="descriptionInput">-->
+				<form:input path="description" type="text" class="form-control" id="descriptionInput"/>
+			</div>
+			<input type="submit" value="Save" class="btn btn-dark"></input>
+			<a class="btn btn-secondary" href="${pageContext.request.contextPath}/">Go
+				back</a>
 		</form:form>
-
-		<div style=""></div>
-
-		<p>
-			<a href="${pageContext.request.contextPath}/suspects/showList">Back
-				to List</a>
-		</p>
-
 	</div>
 
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
 </body>
-
 </html>

@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -29,6 +30,7 @@ public class SuspectDto {
 	@Column(name="id")
 	private int id;
 	
+	@NotNull
 	@Column(name="steamid")
 	private String steamid;
 	
