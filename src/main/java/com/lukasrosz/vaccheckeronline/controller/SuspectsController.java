@@ -1,6 +1,7 @@
 package com.lukasrosz.vaccheckeronline.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -16,10 +17,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 
 import com.lukasrosz.vaccheckeronline.service.SuspectService;
-import com.lukasrosz.vaccheckeronline.steamapiintegration.urlmaker.SteamApiUrlMaker;
+import com.lukasrosz.vaccheckeronline.steamapiintegration.playerbans.PlayerBansWrapper;
+import com.lukasrosz.vaccheckeronline.steamapiintegration.playerbans.SteamPlayerBans;
+import com.lukasrosz.vaccheckeronline.steamapiintegration.responder.SteamApiResponder;
 import com.lukasrosz.vaccheckeronline.suspects.entity.Suspect;
 
 @Controller
@@ -30,11 +32,14 @@ public class SuspectsController {
 	private SuspectService suspectService;
 	
 	@Autowired
-	private SteamApiUrlMaker steamApiUrlMaker;
+	private SteamApiResponder steamApiResponder;
 	
 	@GetMapping("/showList")
 	public String showSuspectList(Model model) {
 		List<Suspect> suspects = suspectService.getSuspects();
+		PlayerBansWrapper playerBansWrapper = steamApiResponder.getPlayerBans(steamApiResponder.suspectLstToIdsArray(suspects));
+		Map<String, SteamPlayerBans> playersBans = steamApiResponder.bansWrapperToMap(playerBansWrapper);
+		suspects.forEach(suspect -> suspect.setPlayerBans(playersBans.get(suspect.getSteamid())));
 
 		model.addAttribute("suspects", suspects);
 		return "list-suspects";
@@ -61,16 +66,14 @@ public class SuspectsController {
 		if (bindingResult.hasErrors()) {
 			return "form-suspects";
 		}
-		
-		RestTemplate restTemplate = new RestTemplate();
-		
-		if(!suspectDto.isSteamAccount(restTemplate, steamApiUrlMaker)) {
+				
+		if(!suspectDto.isSteamAccount(steamApiResponder)) {
 			String incorrectIdError = "Incorrect ID";
 			model.addAttribute("error", incorrectIdError);
 			return "form-suspects";	
 		}
 
-		suspectDto.updateVACStatus(restTemplate, steamApiUrlMaker);
+		suspectDto.updateVACStatus(steamApiResponder);
 		
 		if(suspectService.saveSuspect(suspectDto) == false) {
 			String onListError = "ID already on list";

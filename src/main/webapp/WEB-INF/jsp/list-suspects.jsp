@@ -83,12 +83,12 @@
 						<td class="cell-nickname"><a href="http://steamcommunity.com/profiles/${tempSuspect.steamid}">
 						${tempSuspect.username}</a>
 							<span class="details details_${tempSuspect.id}">
-								<hr>SteamID: ${tempSuspect.steamid}
-								<br>Number of VAC Bans: 
-								<br>Days Since Last Ban:
-								<br>Community Ban:
-								<br>Number of Game Bans:
-								<br>Economy Ban: 
+								<hr>SteamID: <span class="steamid-details">${tempSuspect.steamid}</span>
+								<br>Number of VAC Bans: <span class="numeric-ban-details">${tempSuspect.playerBans.numberOfVACBans}</span>
+								<br>Days Since Last Ban: <span class="numeric-ban-details">${tempSuspect.playerBans.daysSinceLastBan}</span>
+								<br>Community Ban: <span class="non-numeric-ban-details">${tempSuspect.playerBans.communityBanned}</span>
+								<br>Number of Game Bans: <span class="numeric-ban-details">${tempSuspect.playerBans.numberOfGameBans}</span>
+								<br>Economy Ban: <span class="non-numeric-ban-details">${tempSuspect.playerBans.economyBan}</span>
 							</span>
 						</td>
 						<td class="cell-vacstatus">

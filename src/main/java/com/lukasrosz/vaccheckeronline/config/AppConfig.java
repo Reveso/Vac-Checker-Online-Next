@@ -13,8 +13,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
-import com.lukasrosz.vaccheckeronline.steamapiintegration.urlmaker.SteamApiUrlMaker;
-import com.lukasrosz.vaccheckeronline.steamapiintegration.urlmaker.SteamApiUrlMakerImpl;
+import com.lukasrosz.vaccheckeronline.steamapiintegration.responder.SteamApiResponder;
+import com.lukasrosz.vaccheckeronline.steamapiintegration.responder.SteamApiResponderImpl;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 @Configuration
@@ -89,8 +89,8 @@ public class AppConfig {
 	}
 	
 	@Bean
-	public SteamApiUrlMaker steamAPIUrlMaker() {
-		SteamApiUrlMaker steamAPIUrlMaker = new SteamApiUrlMakerImpl(steamAPIKey);
+	public SteamApiResponder steamApiResponder() {
+		SteamApiResponder steamAPIUrlMaker = new SteamApiResponderImpl(steamAPIKey);
 		return steamAPIUrlMaker;
 	}
 

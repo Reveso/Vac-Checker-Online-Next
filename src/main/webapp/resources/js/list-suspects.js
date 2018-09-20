@@ -4,6 +4,8 @@ function initialize() {
 	hideDetails();
 	detailsButtonsListeners();
 	adjustVacStatusStyle();
+	adjustNumbeicBanDetails();
+	adjustNonNumbeicBanDetails();
 }
 
 function hideDetails() {
@@ -40,6 +42,28 @@ function adjustVacStatusStyle() {
 			statuses[i].classList.toggle("clear");
 		} else {
 			statuses[i].classList.toggle("banned");
+		}
+	}
+}
+
+function adjustNumbeicBanDetails() {
+	var stats = document.querySelectorAll(".numeric-ban-details");
+	for(var i=0; i<stats.length; i++) {
+		if(Number(stats[i].innerText) > 0) {
+			stats[i].classList.toggle("banned");
+		} else {
+			stats[i].classList.toggle("clear");
+		}
+	}
+}
+
+function adjustNonNumbeicBanDetails() {
+	var stats = document.querySelectorAll(".non-numeric-ban-details");
+	for(var i=0; i<stats.length; i++) {
+		if(stats[i].innerText === "false" || stats[i].innerText === "none") {
+			stats[i].classList.toggle("clear");
+		} else {
+			stats[i].classList.toggle("banned");
 		}
 	}
 }

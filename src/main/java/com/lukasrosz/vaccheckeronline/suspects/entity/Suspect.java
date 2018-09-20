@@ -10,15 +10,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
-import org.springframework.web.client.RestTemplate;
 
 import com.lukasrosz.vaccheckeronline.steamapiintegration.playerbans.PlayerBansWrapper;
+import com.lukasrosz.vaccheckeronline.steamapiintegration.playerbans.SteamPlayerBans;
 import com.lukasrosz.vaccheckeronline.steamapiintegration.playersummaries.PlayerSummariesWrapper;
-import com.lukasrosz.vaccheckeronline.steamapiintegration.urlmaker.SteamApiUrlMaker;
+import com.lukasrosz.vaccheckeronline.steamapiintegration.responder.SteamApiResponder;
 import com.lukasrosz.vaccheckeronline.steamapiintegration.vanityurl.ResolveVanityWrapper;
 
 @Entity
@@ -48,15 +49,15 @@ public class Suspect {
 	@Generated(value = GenerationTime.ALWAYS)
 	private Date additionDate;
 	
-	public boolean isSteamAccount(RestTemplate restTemplate, 
-			SteamApiUrlMaker steamApiUrlMaker) {
+	@Transient
+	private SteamPlayerBans playerBans;
+	
+	public boolean isSteamAccount(SteamApiResponder steamApiResponder) {
 		
-		resolveVanity(restTemplate, steamApiUrlMaker);
+		resolveVanity(steamApiResponder);
 		
-		PlayerSummariesWrapper summariesResponse = restTemplate
-				.getForObject(steamApiUrlMaker
-						.getPlayerSummariesUrl(new String[] {getSteamid()}), 
-						PlayerSummariesWrapper.class);
+		PlayerSummariesWrapper summariesResponse = steamApiResponder
+				.getPlayerSummaries(new String[] {getSteamid()});
 		
 		if(summariesResponse.getResponse().getPlayers().size() > 0) {
 			setUsername(summariesResponse.getResponse()
@@ -68,24 +69,19 @@ public class Suspect {
 		return false;
 	}
 	
-	private void resolveVanity(RestTemplate restTemplate,
-			SteamApiUrlMaker steamApiUrlMaker) {
-		ResolveVanityWrapper vanityResponse = restTemplate
-				.getForObject(steamApiUrlMaker.resolveVanityUrl(getSteamid()), 
-						ResolveVanityWrapper.class);
+	private void resolveVanity(SteamApiResponder steamApiResponder) {
+		ResolveVanityWrapper vanityResponse = 
+				steamApiResponder.resolveVanity(getSteamid());
 		
 		if (vanityResponse.getResponse().getSuccess() == 1) {
 			setSteamid(vanityResponse.getResponse().getSteamid());
 		} 
 	}
 	
-	public void updateVACStatus(RestTemplate restTemplate,
-			SteamApiUrlMaker steamApiUrlMaker) {
+	public void updateVACStatus(SteamApiResponder steamApiResponder) {
 		
-		PlayerBansWrapper playerBansResponse = 
-				restTemplate
-				.getForObject(steamApiUrlMaker.getPlayerBansUrl
-						(new String[] {getSteamid()}), PlayerBansWrapper.class);
+		PlayerBansWrapper playerBansResponse = steamApiResponder
+				.getPlayerBans(new String[] {getSteamid()});
 		
 		if(playerBansResponse.getPlayers().get(0).isVacBanned()) {
 			setVacStatus("Banned");
@@ -140,6 +136,14 @@ public class Suspect {
 
 	public void setAdditionDate(Date additionDate) {
 		this.additionDate = additionDate;
+	}
+
+	public SteamPlayerBans getPlayerBans() {
+		return playerBans;
+	}
+
+	public void setPlayerBans(SteamPlayerBans playerBans) {
+		this.playerBans = playerBans;
 	}
 
 	@Override
