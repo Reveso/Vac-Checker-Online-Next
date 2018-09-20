@@ -65,7 +65,7 @@
 
 	<div class="container">
 		<div class="jumbotron jumbotron-dark">
-			<h2 id="message">${message}</h2>
+			<h2 id="message">Save Suspect</h2>
 		</div>
 		<form:form id="content" action="saveSuspect" modelAttribute="suspect" method="POST">
 			<form:hidden path="id" />
@@ -93,5 +93,6 @@
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
 		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 		crossorigin="anonymous"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/suspect-form.js"></script>
 </body>
 </html>

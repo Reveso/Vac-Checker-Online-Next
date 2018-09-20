@@ -10,7 +10,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.lukasrosz.vaccheckeronline.suspects.entity.SuspectDto;
+import com.lukasrosz.vaccheckeronline.suspects.entity.Suspect;
 
 
 @Repository
@@ -20,31 +20,32 @@ public class SuspectDAOImpl implements SuspectDAO {
 	private SessionFactory mainDbSessionFactory;
 	
 	@Override
-	public List<SuspectDto> getSuspects() {
+	public List<Suspect> getSuspects() {
 		
 		Session session = mainDbSessionFactory.getCurrentSession();
 		
-		Query<SuspectDto> suspectsQuery = session.createQuery("FROM SuspectDto ORDER BY additionDate DESC", 
-																SuspectDto.class);
+		Query<Suspect> suspectsQuery = session.createQuery("FROM Suspect ORDER BY additionDate DESC", 
+																Suspect.class);
 		
-		List<SuspectDto> suspectsList = suspectsQuery.getResultList();
+		List<Suspect> suspectsList = suspectsQuery.getResultList();
 		
 		return suspectsList;
 	}
 
 	@Override
-	public boolean saveSuspect(SuspectDto suspect) {
+	public boolean saveSuspect(Suspect suspect) {
 		Session session = mainDbSessionFactory.getCurrentSession();
 		
-		Query<SuspectDto> suspectQuery = session.createQuery("FROM SuspectDto WHERE steamid=:suspectedID", 
-				SuspectDto.class);
-		suspectQuery.setParameter("suspectedID", suspect.getSteamid());
-		
+		Query<Suspect> suspectQuery = session.createQuery("FROM Suspect WHERE steamid=:suspectedSteamid OR id=:suspectedID", 
+				Suspect.class);
+		suspectQuery.setParameter("suspectedSteamid", suspect.getSteamid());
+		suspectQuery.setParameter("suspectedID", suspect.getId());
+	
 		try {
-			SuspectDto suspectFromDb = suspectQuery.getSingleResult();
+			Suspect suspectFromDb = suspectQuery.getSingleResult();
 			if(suspectFromDb.getId() == suspect.getId()) {
 				Query<?> updateDescriptionQuery = session
-						.createQuery("UPDATE SuspectDto SET description=:newDesc WHERE id=:susid");
+						.createQuery("UPDATE Suspect SET description=:newDesc WHERE id=:susid");
 				
 				updateDescriptionQuery.setParameter("newDesc", suspect.getDescription());
 				updateDescriptionQuery.setParameter("susid", suspectFromDb.getId());
@@ -53,7 +54,6 @@ public class SuspectDAOImpl implements SuspectDAO {
 				return true;
 			}
 		} catch (NoResultException e) {
-			System.out.println("In exception ==========================================================================");
 			session.saveOrUpdate(suspect);
 			return true;
 		}
@@ -62,16 +62,16 @@ public class SuspectDAOImpl implements SuspectDAO {
 	}
 	
 	@Override
-	public void updateSuspect(SuspectDto suspect) {
+	public void updateSuspect(Suspect suspect) {
 		Session session = mainDbSessionFactory.getCurrentSession();
 		
 		session.update(suspect);
 	}
 
 	@Override
-	public SuspectDto getSuspect(int id) {
+	public Suspect getSuspect(int id) {
 		Session session = mainDbSessionFactory.getCurrentSession();
-		SuspectDto suspect = session.get(SuspectDto.class, id);
+		Suspect suspect = session.get(Suspect.class, id);
 		
 		return suspect;
 	}
@@ -80,7 +80,7 @@ public class SuspectDAOImpl implements SuspectDAO {
 	public void deleteSuspect(int id) {
 		Session session = mainDbSessionFactory.getCurrentSession();
 
-		Query<?> query = session.createQuery("delete from SuspectDto where id=:suspectId");
+		Query<?> query = session.createQuery("delete from Suspect where id=:suspectId");
 		query.setParameter("suspectId", id);
 		
 		query.executeUpdate();

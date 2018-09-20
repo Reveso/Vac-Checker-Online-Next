@@ -19,6 +19,8 @@
 	crossorigin="anonymous">
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/nav-style.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/suspect-form-style.css">
 <link rel="icon"
 	href="${pageContext.request.contextPath}/resources/VAC.jpg">
 </head>
@@ -70,55 +72,48 @@
 			</ul>
 		</div>
 	</nav>
-	<h2>Edit User: ${user.username}</h2>
 
-	<form:form modelAttribute="user" method="POST" action="saveUser"
-		onsubmit="myButton.disabled = true; return true;">
+	<div class="container">
+		<div class="jumbotron jumbotron-dark">
+			<h2 id="message">Edit User: ${user.username}</h2>
+		</div>
 
-		<form:hidden path="password" />
+		<form:form id="content" modelAttribute="user" method="POST"
+			action="saveUser" onsubmit="myButton.disabled = true; return true;">
 
-		<table>
-			<tbody>
-				<tr>
-					<td><label>Username:</label></td>
-					<form:hidden path="username" />
-					<form:errors path="username" cssClass="error" />
-					<td><input type="text" value="${user.username}" disabled /></td>
+			<form:hidden path="password" />
 
-				</tr>
+			<label>Username:</label>
+			<form:hidden path="username" />
+			<form:errors path="username" cssClass="failed" />
 
-				<tr>
-					<td><label>Authorities:</label></td>
-					<!-- <td><form:checkboxes items="${authorityList}" path="authorities" /></td>
-						 -->
-					<td><c:forEach var="tempRole" items="${authorityList}">
-							<form:checkbox path="authorities"
-								value="${fn:toUpperCase(tempRole)}" />${fn:replace(tempRole, "ROLE_", "")}
-						</c:forEach></td>
-				</tr>
+			<input type="text" value="${user.username}" disabled />
+			<br>
+			<label>Authorities: </label>
+			<c:forEach var="tempRole" items="${authorityList}">
+				<form:checkbox path="authorities"
+					value="${fn:toUpperCase(tempRole)}" />
+					${fn:replace(tempRole, "ROLE_", "")}
+				</c:forEach>
 
-				<tr>
-					<td><label>Enabled:</label></td>
-					<td><form:checkbox path="enabled" value="1" /></td>
-				</tr>
+			<br>
+			<label>Enabled: </label>
+			<form:checkbox path="enabled" value="1" />
 
-				<tr>
-					<td><input type="submit" value="Save" name="myButton" /></td>
-				</tr>
-			</tbody>
-		</table>
-	</form:form>
+			<br>
+			<input type="submit" value="Save" name="myButton"
+				class="btn btn-primary" />
+			<a href="${pageContext.request.contextPath}/adminPanel/showPanel"
+				class="btn btn-secondary">Back to Admin Panel</a>
+		</form:form>
+	</div>
 
-	<br>
-	<br>
-	<form:form
-		action="${pageContext.request.contextPath}/adminPanel/showPanel"
-		method="GET">
-		<input type="submit" value="Back to Admin Panel"
-			class="adminPanelButton" />
-	</form:form>
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
 </body>
 </html>

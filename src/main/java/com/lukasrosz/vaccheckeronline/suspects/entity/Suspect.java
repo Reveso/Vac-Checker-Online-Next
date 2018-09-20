@@ -23,7 +23,7 @@ import com.lukasrosz.vaccheckeronline.steamapiintegration.vanityurl.ResolveVanit
 
 @Entity
 @Table(name="suspects")
-public class SuspectDto {
+public class Suspect {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -61,6 +61,8 @@ public class SuspectDto {
 		if(summariesResponse.getResponse().getPlayers().size() > 0) {
 			setUsername(summariesResponse.getResponse()
 					.getPlayers().get(0).getPersonaname());
+			setSteamid(summariesResponse.getResponse().
+					getPlayers().get(0).getSteamid());
 			return true;
 		}
 		return false;

@@ -22,6 +22,9 @@
 	crossorigin="anonymous">
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/nav-style.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/admin-panel-style.css">
+
 <link rel="icon"
 	href="${pageContext.request.contextPath}/resources/VAC.jpg">
 </head>
@@ -73,46 +76,56 @@
 			</ul>
 		</div>
 	</nav>
-	<h2>Admin Panel</h2>
 
-	<table>
-		<tr>
-			<th>User name</th>
-			<th>Roles</th>
-			<th>Action</th>
-		</tr>
-		<c:forEach var="tempUser" items="${userForm.users}" varStatus="status">
 
-			<c:url var="updateLink" value="/adminPanel/editUser">
-				<c:param name="username" value="${tempUser.username}" />
-			</c:url>
+	<div class="container">
+		<div class="jumbotron jumbotron-dark">
+			<h2 id="message">Admin Panel</h2>
+		</div>
 
-			<tr>
-				<td><p>${tempUser.username}</p></td>
+		<table id="content">
+			<thead>
+				<tr>
+					<td>Username</td>
+					<td>Roles</td>
+					<td>Action</td>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach var="tempUser" items="${userForm.users}"
+					varStatus="status">
 
-				<td><c:forEach var="tempRole" items="${tempUser.authorities}"
-						varStatus="roleStatus">
+					<c:url var="updateLink" value="/adminPanel/editUser">
+						<c:param name="username" value="${tempUser.username}" />
+					</c:url>
 
-						<input type="checkbox" checked disabled /> 
-						${fn:toLowerCase(fn:replace(tempRole.authority, "ROLE_", ""))}
-					
-					</c:forEach></td>
+					<tr>
+						<td>${tempUser.username}</td>
 
-				<td><a href="${updateLink}">Edit</a></td>
+						<td><c:forEach var="tempRole" items="${tempUser.authorities}"
+								varStatus="roleStatus">	
+									
+									${fn:toLowerCase(fn:replace(tempRole.authority, "ROLE_", " "))}
+								</c:forEach></td>
+						<td><a href="${updateLink}" class="btn btn-primary">Edit</a></td>
+					</tr>
+				</c:forEach>
+				<tr>
+					<td colspan="3">
+						<a href="${pageContext.request.contextPath}/suspects/showList"
+							class="btn btn-secondary">Go Back</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
-			</tr>
-		</c:forEach>
-	</table>
-
-	<br>
-	<br>
-	<form:form
-		action="${pageContext.request.contextPath}/suspects/showList"
-		method="GET">
-		<input type="submit" value="Back to list" class="adminPanelButton" />
-	</form:form>
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
 </body>
 </html>

@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.lukasrosz.vaccheckeronline.service.SuspectService;
 import com.lukasrosz.vaccheckeronline.steamapiintegration.urlmaker.SteamApiUrlMaker;
-import com.lukasrosz.vaccheckeronline.suspects.entity.SuspectDto;
+import com.lukasrosz.vaccheckeronline.suspects.entity.Suspect;
 
 
 @Configuration
@@ -27,7 +27,7 @@ public class AppTasksConfig {
 	@Scheduled(fixedRate=28800000)
 	public void doSomething() {
 		System.out.println("========================================================>>>>> Beginning scheduled task<<<<====================================================");
-		List<SuspectDto> suspects = suspectService.getSuspects();
+		List<Suspect> suspects = suspectService.getSuspects();
 		RestTemplate restTemplate = new RestTemplate();
 		
 		suspects.parallelStream().forEach(suspect -> {

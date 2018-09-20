@@ -28,3 +28,12 @@ body {
 .failed {
 	color: red;
 }
+
+.clear {
+	color: #63db3f;
+}
+
+.banned {
+	text-transform: uppercase;
+	color: #d61d1d;
+}

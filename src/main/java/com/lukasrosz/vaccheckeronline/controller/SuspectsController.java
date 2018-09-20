@@ -20,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.lukasrosz.vaccheckeronline.service.SuspectService;
 import com.lukasrosz.vaccheckeronline.steamapiintegration.urlmaker.SteamApiUrlMaker;
-import com.lukasrosz.vaccheckeronline.suspects.entity.SuspectDto;
+import com.lukasrosz.vaccheckeronline.suspects.entity.Suspect;
 
 @Controller
 @RequestMapping("/suspects")
@@ -34,7 +34,7 @@ public class SuspectsController {
 	
 	@GetMapping("/showList")
 	public String showSuspectList(Model model) {
-		List<SuspectDto> suspects = suspectService.getSuspects();
+		List<Suspect> suspects = suspectService.getSuspects();
 
 		model.addAttribute("suspects", suspects);
 		return "list-suspects";
@@ -42,23 +42,21 @@ public class SuspectsController {
 	
 	@GetMapping("/showFormForAdd")
 	public String showFormForAdd(Model model) {
-		model.addAttribute("suspect", new SuspectDto());
-		model.addAttribute("message", "Add a new suspect");
+		model.addAttribute("suspect", new Suspect());
 		return "form-suspects";
 	}
 	
 	@GetMapping("/showFormForUpdate")
 	public String showFormForUpdate(@RequestParam("suspectId") int suspectId, 
 									Model model) {
-		SuspectDto suspect = suspectService.getSuspect(suspectId);
+		Suspect suspect = suspectService.getSuspect(suspectId);
 		model.addAttribute("suspect", suspect);
-		model.addAttribute("message", "Update suspect");
 		return "form-suspects";	
 	}
 	
 	@PostMapping("/saveSuspect")
-	public String saveSuspect(@Valid @ModelAttribute("suspect") SuspectDto suspectDto, 
-							BindingResult bindingResult, Model model) {
+	public String saveSuspect(@Valid @ModelAttribute("suspect") Suspect suspectDto, 
+			BindingResult bindingResult, Model model) {
 		
 		if (bindingResult.hasErrors()) {
 			return "form-suspects";

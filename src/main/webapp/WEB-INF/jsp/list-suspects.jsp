@@ -3,6 +3,8 @@
 <%@ taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+
 
 
 <!DOCTYPE html>
@@ -82,7 +84,7 @@
 						${tempSuspect.username}</a>
 							<span class="details details_${tempSuspect.id}">
 								<hr>SteamID: ${tempSuspect.steamid}
-								<br>Number of VAC Bans:
+								<br>Number of VAC Bans: 
 								<br>Days Since Last Ban:
 								<br>Community Ban:
 								<br>Number of Game Bans:
@@ -105,7 +107,7 @@
 								<br><i>Description:</i> ${tempSuspect.description}
 							</span>
 						</td>
-						<td>${tempSuspect.additionDate}</td>
+						<td>${fn:substring(tempSuspect.additionDate, 0, 16)}</td>
 						<td>
 							<button id="details_${tempSuspect.id}" type="button" class="btn btn-light details-button">Details</button>
 						</td>

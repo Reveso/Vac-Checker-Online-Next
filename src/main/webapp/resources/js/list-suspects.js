@@ -3,6 +3,7 @@ initialize();
 function initialize() {
 	hideDetails();
 	detailsButtonsListeners();
+	adjustVacStatusStyle();
 }
 
 function hideDetails() {
@@ -29,5 +30,16 @@ function detailsButtonsListeners() {
 function changeElementsDisplay(elements, value) {
 	for(var j=0; j<elements.length; j++) {
 		elements[j].style.display = value;
+	}
+}
+
+function adjustVacStatusStyle() {
+	var statuses = document.querySelectorAll(".vacstatus");
+	for(var i=0; i<statuses.length; i++) {
+		if(statuses[i].innerText === "Clear") {
+			statuses[i].classList.toggle("clear");
+		} else {
+			statuses[i].classList.toggle("banned");
+		}
 	}
 }

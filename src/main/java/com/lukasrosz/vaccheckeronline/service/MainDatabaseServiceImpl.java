@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lukasrosz.vaccheckeronline.accounts.entity.UserDto;
 import com.lukasrosz.vaccheckeronline.dao.SuspectDAO;
 import com.lukasrosz.vaccheckeronline.dao.UserDAO;
-import com.lukasrosz.vaccheckeronline.suspects.entity.SuspectDto;
+import com.lukasrosz.vaccheckeronline.suspects.entity.Suspect;
 
 @Service
 public class MainDatabaseServiceImpl implements UserService, SuspectService {
@@ -22,25 +22,25 @@ public class MainDatabaseServiceImpl implements UserService, SuspectService {
 	
 	@Override
 	@Transactional(value="mainDBTransactionManager")
-	public List<SuspectDto> getSuspects() {
+	public List<Suspect> getSuspects() {
 		return suspectDAO.getSuspects();
 	}
 
 	@Override
 	@Transactional(value="mainDBTransactionManager")
-	public boolean saveSuspect(SuspectDto suspect) {
+	public boolean saveSuspect(Suspect suspect) {
 		return suspectDAO.saveSuspect(suspect);
 	}
 
 	@Override
 	@Transactional(value="mainDBTransactionManager")
-	public SuspectDto getSuspect(int id) {
+	public Suspect getSuspect(int id) {
 		return suspectDAO.getSuspect(id);
 	}
 
 	@Override
 	@Transactional(value="mainDBTransactionManager")
-	public void updateSuspect(SuspectDto suspect) {
+	public void updateSuspect(Suspect suspect) {
 		suspectDAO.updateSuspect(suspect);
 	}
 	
