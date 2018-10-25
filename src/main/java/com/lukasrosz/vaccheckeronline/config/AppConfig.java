@@ -29,24 +29,13 @@ public class AppConfig {
 	@Bean
 	public DataSource mainDataSource() {
 		MysqlDataSource mainDataSource = new MysqlDataSource();
-//		try {
-//			mainDataSource.setDriverClass(env.getProperty("suspect-jdbc.driver"));
-//		} catch (PropertyVetoException e) {
-//			throw new RuntimeException(e);
-//		}
-
+		
 		System.out.println(">>> vacchecker-jdbc.url=" + env.getProperty("vacchecker-jdbc.url"));
 		System.out.println(">>> vacchecker-jdbc.user=" + env.getProperty("vacchecker-jdbc.user"));
+		
 		mainDataSource.setUrl(env.getProperty("vacchecker-jdbc.url"));
-//		mainDataSource.setJdbcUrl(env.getProperty("vacchecker-jdbc.url"));
 		mainDataSource.setUser(env.getProperty("vacchecker-jdbc.user"));
 		mainDataSource.setPassword(env.getProperty("vacchecker-jdbc.password"));
-
-//		mainDataSource.setInitialPoolSize(getIntProperty("connection.pool.initialPoolSize", env));
-//		mainDataSource.setMinPoolSize(getIntProperty("connection.pool.minPoolSize", env));
-//		mainDataSource.setMaxPoolSize(getIntProperty("connection.pool.maxPoolSize", env));
-//		mainDataSource.setMaxIdleTime(getIntProperty("connection.pool.maxIdleTime", env));
-
 		return mainDataSource;
 	}
 
@@ -69,14 +58,7 @@ public class AppConfig {
 		mainDBTransactionManager.setSessionFactory(mainDbSessionFactory);
 		return mainDBTransactionManager;
 	}
-	
-	private int getIntProperty(String propName, Environment env) {
-		String propVal = env.getProperty(propName);
-		int intPropVal = Integer.parseInt(propVal);
 		
-		return intPropVal;
-	}
-	
 	private Properties hibernateProperties(Environment env) {
 		return new Properties() {
 			private static final long serialVersionUID = 1L;
@@ -90,8 +72,8 @@ public class AppConfig {
 	
 	@Bean
 	public SteamApiResponder steamApiResponder() {
-		SteamApiResponder steamAPIUrlMaker = new SteamApiResponderImpl(steamAPIKey);
-		return steamAPIUrlMaker;
+		SteamApiResponder steamApiResponder = new SteamApiResponderImpl(steamAPIKey);
+		return steamApiResponder;
 	}
 
 }
